@@ -45,7 +45,7 @@ app.delete('/registrar/:id', async (req, res) => {
     if (!usuario) {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
-
+    console.log("Usuario eliminado correctamente")
     res.json({ message: 'Usuario eliminado correctamente' });
   } catch (error) {
     console.error('Error al eliminar el usuario:', error);
@@ -53,7 +53,39 @@ app.delete('/registrar/:id', async (req, res) => {
   }
 });
 
-app.listen(process.env.PORT, () => {
+
+app.post('/login', async (req, res) => {
+  const { user, password } = req.body;
+
+  try {
+    // Buscar al usuario en la base de datos por su nombre de usuario
+    const usuario = await Usuario.findOne({ user });
+
+    if (!usuario) {
+      return res.status(401).json({ message: 'Credenciales incorrectas' });
+    }
+
+    // Verificar la contraseña (puedes usar una librería como bcrypt para comparar contraseñas)
+    if (password !== usuario.password) {
+      return res.status(401).json({ message: 'Credenciales incorrectas' });
+    }
+
+    /* // Generar un token de autenticación
+    const token = jwt.sign({ userId: usuario._id }, 'tu-secreto-seguro', {
+      expiresIn: '1h', // El token expirará en 1 hora
+    });
+
+    res.json({ token }); */
+    console.log("Inicio de Sesión correcto!")
+    res.status(200).json({message: "Has iniciado Sesión"})
+  } catch (error) {
+    console.error('Error de inicio de sesión:', error);
+    res.status(500).json({ message: 'Error interno del servidor' });
+  }
+});
+
+
+app.listen(3000, () => {
   mongooseConnection()
-  console.log(`Servidor en ejecución en http://localhost:${process.env.PORT}`);
+  console.log(`Servidor en ejecución en http://localhost:3000`);
 })
