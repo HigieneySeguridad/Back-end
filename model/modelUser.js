@@ -3,13 +3,25 @@ const mongoose = require('mongoose');
 const usuarioSchema = new mongoose.Schema({
   user: {
     type: String,
-    required: true, // Hace que el campo sea requerido
+    required: true, 
   },
   password: {
     type: String,
-    required: true, // Hace que el campo sea requerido
+    required: true, 
   },
-  // Otros campos de usuario...
+  role: {
+    type: String,
+ 
+  },
+  active: {
+    type: Boolean,
+    default: true,
+  },
+  fecha: {
+    type: Date,
+    default: Date.now,
+  },
+
 });
 
 const Usuario = mongoose.model('Usuario', usuarioSchema);

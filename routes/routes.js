@@ -16,10 +16,9 @@ app.get('/registrar', async (req, res) => {
 
 }
 
-
 app.post('/registrar', async (req, res) => {
-    const { user, password } = req.body;
-    const nuevoUsuario = new Usuario({user, password});
+    const { user, password, role } = req.body;
+    const nuevoUsuario = new Usuario({user, password, role});
   
   try {
     await nuevoUsuario.save();
@@ -30,7 +29,5 @@ app.post('/registrar', async (req, res) => {
      res.status(500).send("error al registrar usuario");
   }
   });
-
-
 
 module.exports = userRoutes;
