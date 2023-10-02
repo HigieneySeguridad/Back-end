@@ -58,24 +58,15 @@ app.post('/login', async (req, res) => {
   const { user, password } = req.body;
 
   try {
-    // Buscar al usuario en la base de datos por su nombre de usuario
-    const usuario = await Usuario.findOne({ user });
+    const usuario = await Usuario.findOne({ user, password });
 
-    if (!usuario) {
+    if (!usuario.user) {
       return res.status(401).json({ message: 'Credenciales incorrectas' });
     }
 
-    // Verificar la contraseña (puedes usar una librería como bcrypt para comparar contraseñas)
-    if (password !== usuario.password) {
+    if (!usuario.password) {
       return res.status(401).json({ message: 'Credenciales incorrectas' });
     }
-
-    /* // Generar un token de autenticación
-    const token = jwt.sign({ userId: usuario._id }, 'tu-secreto-seguro', {
-      expiresIn: '1h', // El token expirará en 1 hora
-    });
-
-    res.json({ token }); */
     console.log("Inicio de Sesión correcto!")
     res.status(200).json({message: "Has iniciado Sesión"})
   } catch (error) {
