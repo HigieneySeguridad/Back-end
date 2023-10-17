@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const cors = require("cors");
 const mongooseConnection = require('./database/connection');
 const Usuario = require("./model/modelUser")
+const jwt = require('jsonwebtoken');
+
 
 
 const app = express();
@@ -53,10 +55,10 @@ app.delete('/registrar/:id', async (req, res) => {
   }
 });
 
-
+const secretKey = process.env.SECRET_KEY; 
 app.post('/login', async (req, res) => {
   const { user, password } = req.body;
-
+  const token = jwt.sign({ user }, secretKey);
   try {
     const usuario = await Usuario.findOne({ user, password });
 
@@ -67,16 +69,19 @@ app.post('/login', async (req, res) => {
     if (!usuario.password) {
       return res.status(401).json({ message: 'Credenciales incorrectas' });
     }
+
     console.log("Inicio de Sesión correcto!")
-    res.status(200).json({message: "Has iniciado Sesión"})
+    return res.json({ token });
+    
   } catch (error) {
     console.error('Error de inicio de sesión:', error);
     res.status(500).json({ message: 'Error interno del servidor' });
+    return
   }
 });
 
 
-app.listen(3000, () => {
+app.listen(process.env.PORT, () => {
   mongooseConnection()
-  console.log(`Servidor en ejecución en http://localhost:3000`);
+  console.log(`Servidor en ejecución en http://localhost:${process.env.PORT}`);
 })

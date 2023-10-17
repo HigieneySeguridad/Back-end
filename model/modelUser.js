@@ -11,6 +11,7 @@ const usuarioSchema = new mongoose.Schema({
   },
   role: {
     type: String,
+    default: 'Operario'
  
   },
   active: {
