@@ -24,6 +24,7 @@ app.use(limiter)
 app.use("/registrar", userRoutes)
 app.use("/login", loginRoutes)
 
+
 //DATABASE CONNECT
 mongooseConnection()
 
