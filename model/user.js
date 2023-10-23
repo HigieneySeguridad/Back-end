@@ -10,8 +10,7 @@ const usuarioSchema = new mongoose.Schema({
     required: true, 
   },
   role: {
-    type: String,
- 
+    type: String
   },
   active: {
     type: Boolean,

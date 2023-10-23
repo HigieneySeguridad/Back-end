@@ -11,17 +11,25 @@ const consultarUsuarios = async (req, res) => {
 }
 
 const registrarUsuarios =  async (req, res) => {
-    const { user, password, role } = req.body;
-    const nuevoUsuario = new Usuario({user, password, role});
-    
-    try {
-    await nuevoUsuario.save();
-    console.log("Usuario registrado con exito");
-    res.status(200).json({mensaje: "usuario registrado con exito", nuevoUsuario});
-    } catch(err){
-    console.error("error al registrar el usuario", err.message);
-    res.status(500).send("error al registrar usuario");
-    }
+  const { user, password, role } = req.body;
+
+// Validar que los campos requeridos no estén vacíos
+if (!user || !password || !role) {
+  console.log("Error, revise los campos")
+  return res.status(400).json({ mensaje: "Error, revise los campos" });
+}
+
+const nuevoUsuario = new Usuario({ user, password, role });
+
+try {
+  await nuevoUsuario.save();
+  console.log("Usuario registrado con éxito");
+  res.status(200).json({ mensaje: "Usuario registrado con éxito", nuevoUsuario });
+} catch (err) {
+  console.error("Error al registrar el usuario", err.message);
+  res.status(500).send("Error al registrar usuario");
+}
+
     };
 
 
