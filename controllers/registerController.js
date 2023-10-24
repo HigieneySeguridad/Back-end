@@ -1,5 +1,6 @@
 const Usuario = require("../model/user")
 
+
 const consultarUsuarios = async (req, res) => {
   try {
     const usuarios = await Usuario.find({});
@@ -11,26 +12,30 @@ const consultarUsuarios = async (req, res) => {
 }
 
 const registrarUsuarios =  async (req, res) => {
-  const { user, password, role } = req.body;
+  const { username, password, role } = req.body;
 
 // Validar que los campos requeridos no estén vacíos
-if (!user || !password || !role) {
+if (!username || !password || !role) {
   console.log("Error, revise los campos")
   return res.status(400).json({ mensaje: "Error, revise los campos" });
 }
 
-const nuevoUsuario = new Usuario({ user, password, role });
+const nuevoUsuario = new Usuario({ username, password, role });
 
 try {
   await nuevoUsuario.save();
   console.log("Usuario registrado con éxito");
   res.status(200).json({ mensaje: "Usuario registrado con éxito", nuevoUsuario });
 } catch (err) {
-  console.error("Error al registrar el usuario", err.message);
-  res.status(500).send("Error al registrar usuario");
+  if (err.code === 11000) {
+    console.error("El nombre de usuario ya existe.");
+    res.status(409).json({ mensaje: "El nombre de usuario ya existe." });
+  } else {
+    console.error("Error al registrar el usuario", err.message);
+    res.status(500).send("Error al registrar usuario");
+  }
 }
-
-    };
+};
 
 
 const eliminarUsuarios = async (req, res) => {
