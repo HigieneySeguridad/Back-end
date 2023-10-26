@@ -4,6 +4,5 @@ const Router = express.Router();
 
 
 Router.post('/', iniciarSesion);
-Router.post("/protegido", rutaProtegida)
 
 module.exports = Router;
