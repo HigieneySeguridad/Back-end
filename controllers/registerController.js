@@ -19,13 +19,12 @@ if (!username || !password || !role) {
   console.log("Error, revise los campos")
   return res.status(400).json({ mensaje: "Error, revise los campos" });
 }
-
-const nuevoUsuario = new Usuario({ username, password, role });
+const nuevoUsuario = new Usuario({ username, password, role});
 
 try {
   await nuevoUsuario.save();
-  console.log("Usuario registrado con éxito");
-  res.status(200).json({ mensaje: "Usuario registrado con éxito", nuevoUsuario });
+  console.log("Usuario registrado con éxito", nuevoUsuario);
+  res.status(200).json({ mensaje: "Usuario registrado con éxito"});
 } catch (err) {
   if (err.code === 11000) {
     console.error("El nombre de usuario ya existe.");
@@ -36,7 +35,6 @@ try {
   }
 }
 };
-
 
 const eliminarUsuarios = async (req, res) => {
     try {
