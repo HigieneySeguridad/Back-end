@@ -4,6 +4,7 @@ const cors = require("cors");
 const mongooseConnection = require('./database/connection');
 const userRoutes = require("./routes/registerUser")
 const loginRoutes = require("./routes/loginUser")
+const uploadImage = require("./routes/uploadImage")
 const limiter = require("./middlewares/rateLimiter")
 require('dotenv').config();
 
@@ -21,6 +22,9 @@ app.use(limiter)
 //ROUTES
 app.use("/registrar", userRoutes)
 app.use("/login", loginRoutes)
+app.use("/upload", uploadImage)
+app.use('/uploads', express.static('uploads'));
+
 
 
 //DATABASE CONNECT

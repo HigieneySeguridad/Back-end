@@ -1,6 +1,5 @@
 const Usuario = require("../model/user")
 
-
 const consultarUsuarios = async (req, res) => {
   try {
     const usuarios = await Usuario.find({});
@@ -19,7 +18,7 @@ if (!username || !password || !role) {
   console.log("Error, revise los campos")
   return res.status(400).json({ mensaje: "Error, revise los campos" });
 }
-const nuevoUsuario = new Usuario({ username, password, role});
+const nuevoUsuario = new Usuario({ username, password, role, date: new Date()});
 
 try {
   await nuevoUsuario.save();
