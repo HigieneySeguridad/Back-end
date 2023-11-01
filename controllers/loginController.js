@@ -15,7 +15,12 @@ const iniciarSesion = async (req, res) => {
       if (password !== usuario.password) {
         return res.status(401).json({ message: 'Contraseña incorrecta' });
       }
-      const token = jwt.sign({ username, password }, process.env.SECRET_KEY);
+
+      const payload = { username, password }
+      const horaEnSegundos = 60 * 6; //hace que el token dure 1 hora
+      const exp = Math.floor(Date.now() / 1000) + horaEnSegundos;
+
+      const token = jwt.sign({...payload, exp }, process.env.SECRET_KEY);
       
       console.log("Inicio de Sesión correcto!")
 

@@ -39,7 +39,7 @@ Router.post('/', upload.single('image'), async (req, res) => {
 
     res.status(200).json({ message: 'Imagen subida correctamente' });
   } catch (error) {
-    res.status(500).json({ error: 'Error al subir imagen' });
+    res.status(500).json({ error: 'Seleccione una imagen' });
   }
 });
 
