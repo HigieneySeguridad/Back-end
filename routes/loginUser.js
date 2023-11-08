@@ -1,4 +1,4 @@
-const { iniciarSesion, rutaProtegida } = require("../controllers/loginController");
+const { iniciarSesion } = require("../controllers/loginController");
 const express = require("express")
 const Router = express.Router();
 
