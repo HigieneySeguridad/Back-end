@@ -1,34 +1,34 @@
 const Usuario = require("../model/user")
 const jwt = require('jsonwebtoken');
-
+const bcrypt = require('bcrypt')
 
 const iniciarSesion = async (req, res) => {
-    const { username, password } = req.body;
-    
-    try {
-      const usuario = await Usuario.findOne({ username });
-      
-      if (!usuario) {
-        return res.status(401).json({ message: 'Usuario no encontrado' });
-      } 
-      
-      if (password !== usuario.password) {
-        return res.status(401).json({ message: 'Contraseña incorrecta' });
-      }
+  const { username, password } = req.body;
 
-      const payload = { username, password }
-      const horaEnSegundos = 60 * 6; //hace que el token dure 1 hora
-      const exp = Math.floor(Date.now() / 1000) + horaEnSegundos;
+  try {
+    const usuario = await Usuario.findOne({ username });
 
-      const token = jwt.sign({...payload, exp }, process.env.SECRET_KEY);
-      
-      console.log("Inicio de Sesión correcto!")
-
-      res.json({ token, role: usuario.role, nombre: usuario.username });
-    } catch (error) {
-      console.error('Error de inicio de sesión:', error);
-      res.status(500).json({ message: 'Error interno del servidor' });
+    if (!usuario) {
+      return res.status(401).json({ message: 'Usuario no encontrado' });
     }
+
+    // Comparar la contraseña proporcionada con la contraseña encriptada almacenada
+    const match = await bcrypt.compare(password, usuario.hashedPassword);
+
+    if (!match) {
+      return res.status(401).json({ message: 'Contraseña incorrecta' });
+    }
+
+    const payload = { username };
+    const token = jwt.sign({ ...payload }, process.env.SECRET_KEY);
+
+    console.log("Inicio de Sesión correcto!");
+
+    res.json({ token, role: usuario.role, nombre: usuario.username });
+  } catch (error) {
+    console.error('Error de inicio de sesión:', error);
+    res.status(500).json({ message: 'Error interno del servidor' });
   }
+};
 
   module.exports = {iniciarSesion}
