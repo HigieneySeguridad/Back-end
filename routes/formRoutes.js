@@ -1,9 +1,10 @@
 const express = require("express");
 const Router = express.Router();
-const {formProteccion, formPeligros, formRiesgos, formMedidas} = require('../controllers/formController');
+const {formProteccion, formPeligros, formRiesgos, formMedidas, obtenerDatosProteccion} = require('../controllers/formController');
 
 
 Router.post("/proteccion", formProteccion);
+Router.get("/proteccion", obtenerDatosProteccion);
 
 Router.post("/peligros", formPeligros);
 

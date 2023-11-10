@@ -4,11 +4,8 @@ const formProteccion = async (req, res) =>{
     try {
         const datosForm = req.body;
     
-        // Valida los datos según el esquema
-        const date = new Date()
-        const checkboxData = new ProteccionModel(datosForm, date);
-       
-        // Los datos son válidos, guárdalos en la base de datos
+        const checkboxData = new ProteccionModel(datosForm);
+
         await checkboxData.save();
     
         console.log('Datos almacenados: ', checkboxData);
@@ -18,14 +15,25 @@ const formProteccion = async (req, res) =>{
         } 
 }
 
+const obtenerDatosProteccion = async (req, res) => {
+  try {
+    // Realizar la búsqueda en la base de datos (puedes personalizar la consulta según tus necesidades)
+    const resultados = await ProteccionModel.find();
+
+    // Enviar los resultados como respuesta
+    res.status(200).json(resultados);
+  } catch (error) {
+    // Manejar cualquier error que pueda ocurrir durante la búsqueda
+    res.status(500).json({ error: 'Error al obtener los datos de protección.' });
+  }
+};
+
 const formPeligros = async (req, res) =>{
     try {
         const datosForm = req.body;
     
-        // Valida los datos según el esquema
         const checkboxData = new PeligrosModel({datosForm});
     
-        // Los datos son válidos, guárdalos en la base de datos
         await checkboxData.save();
     
         console.log("Datos almacenados con éxito en la base de datos.", checkboxData);
@@ -39,10 +47,10 @@ const formRiesgos = async (req, res) => {
     try {
         const datosForm = req.body;
     
-        // Valida los datos según el esquema
+     
         const checkboxData = new RiegosModel({datosForm, date: new Date()});
     
-        // Los datos son válidos, guárdalos en la base de datos
+       
         await checkboxData.save();
     
         console.log("Datos almacenados con éxito en la base de datos.", datosForm);
@@ -56,10 +64,10 @@ const formMedidas = async (req, res) =>{
     try {
         const datosForm = req.body;
     
-        // Valida los datos según el esquema
+        
         const checkboxData = new MedidasModel({datosForm, date: new Date()});
     
-        // Los datos son válidos, guárdalos en la base de datos
+       
         await checkboxData.save();
     
         console.log("Datos almacenados con éxito en la base de datos.", datosForm);
@@ -70,4 +78,4 @@ const formMedidas = async (req, res) =>{
 }
 
 
-module.exports = {formProteccion, formPeligros, formRiesgos, formMedidas}
+module.exports = {formProteccion, obtenerDatosProteccion, formPeligros, formRiesgos, formMedidas}
