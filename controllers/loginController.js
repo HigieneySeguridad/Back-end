@@ -24,7 +24,7 @@ const iniciarSesion = async (req, res) => {
 
     console.log("Inicio de Sesión correcto!");
 
-    res.json({ token, role: usuario.role, nombre: usuario.username, userId: usuario._id  });
+    res.json({ token, role: usuario.role, nombre: usuario.username, userId: usuario._id,dni: usuario.dni,telefono: usuario.telefono  });
   } catch (error) {
     console.error('Error de inicio de sesión:', error);
     res.status(500).json({ message: 'Error interno del servidor' });
@@ -33,7 +33,7 @@ const iniciarSesion = async (req, res) => {
 
 const editarPerfil = async (req, res) => {
   const { userId } = req.params;
-  const { nombre } = req.body; // Obtener el ID de usuario de los parámetros
+  const { telefono, dni } = req.body;
 
   try {
     const usuario = await Usuario.findById(userId);
@@ -42,14 +42,10 @@ const editarPerfil = async (req, res) => {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
 
-    // Obtener los campos a actualizar desde el cuerpo de la solicitud
-    
+    // No actualices el nombre de usuario
+    usuario.telefono = telefono;
+    usuario.dni = dni;
 
-    // Actualizar los campos del usuario
-    usuario.username = nombre;
-    // Actualiza otros campos según tus necesidades
-
-    // Guarda los cambios en la base de datos
     await usuario.save();
 
     res.json({ message: 'Perfil actualizado correctamente' });
@@ -58,6 +54,5 @@ const editarPerfil = async (req, res) => {
     res.status(500).json({ message: 'Error interno del servidor' });
   }
 };
-
 
 module.exports = {iniciarSesion,editarPerfil}

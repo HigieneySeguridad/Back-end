@@ -17,6 +17,12 @@ const usuarioSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  dni:{
+    type:Number
+  },
+  telefono:{
+    type:Number
+  },
    date: {
     type: Date
    }
