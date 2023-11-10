@@ -1,6 +1,6 @@
-const Usuario = require("../model/user")
+const Usuario = require("../model/user");
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
 
 const iniciarSesion = async (req, res) => {
   const { username, password } = req.body;
@@ -12,12 +12,12 @@ const iniciarSesion = async (req, res) => {
       return res.status(401).json({ message: 'Usuario no encontrado' });
     }
 
-    // Comparar la contraseña proporcionada con la contraseña encriptada almacenada
+    //Comparar la contraseña proporcionada con la contraseña encriptada almacenada
     const match = await bcrypt.compare(password, usuario.hashedPassword);
 
     if (!match) {
       return res.status(401).json({ message: 'Contraseña incorrecta' });
-    }
+    } 
 
     const payload = { username };
     const token = jwt.sign({ ...payload }, process.env.SECRET_KEY);

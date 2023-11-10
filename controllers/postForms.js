@@ -1,4 +1,4 @@
-const { ProteccionModel, PeligrosModel, RiegosModel, MedidasModel } = require("../model/form");
+const { ProteccionModel, PeligrosModel, RiesgosModel, MedidasModel } = require("../model/form");
 
 const formProteccion = async (req, res) =>{
     try {
@@ -15,24 +15,13 @@ const formProteccion = async (req, res) =>{
         } 
 }
 
-const obtenerDatosProteccion = async (req, res) => {
-  try {
-    // Realizar la búsqueda en la base de datos (puedes personalizar la consulta según tus necesidades)
-    const resultados = await ProteccionModel.find();
 
-    // Enviar los resultados como respuesta
-    res.status(200).json(resultados);
-  } catch (error) {
-    // Manejar cualquier error que pueda ocurrir durante la búsqueda
-    res.status(500).json({ error: 'Error al obtener los datos de protección.' });
-  }
-};
 
 const formPeligros = async (req, res) =>{
     try {
         const datosForm = req.body;
     
-        const checkboxData = new PeligrosModel({datosForm});
+        const checkboxData = new PeligrosModel(datosForm);
     
         await checkboxData.save();
     
@@ -43,14 +32,13 @@ const formPeligros = async (req, res) =>{
         } 
 }
 
+
 const formRiesgos = async (req, res) => {
     try {
         const datosForm = req.body;
     
-     
-        const checkboxData = new RiegosModel({datosForm, date: new Date()});
+        const checkboxData = new RiesgosModel(datosForm);
     
-       
         await checkboxData.save();
     
         console.log("Datos almacenados con éxito en la base de datos.", datosForm);
@@ -64,10 +52,8 @@ const formMedidas = async (req, res) =>{
     try {
         const datosForm = req.body;
     
-        
-        const checkboxData = new MedidasModel({datosForm, date: new Date()});
+        const checkboxData = new MedidasModel(datosForm);
     
-       
         await checkboxData.save();
     
         console.log("Datos almacenados con éxito en la base de datos.", datosForm);
@@ -78,4 +64,4 @@ const formMedidas = async (req, res) =>{
 }
 
 
-module.exports = {formProteccion, obtenerDatosProteccion, formPeligros, formRiesgos, formMedidas}
+module.exports = {formProteccion, formPeligros, formRiesgos, formMedidas}

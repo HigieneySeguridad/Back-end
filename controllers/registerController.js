@@ -1,5 +1,4 @@
 const Usuario = require("../model/user")
-const bcrypt = require('bcrypt');
 
 const consultarUsuarios = async (req, res) => {
   try {
@@ -20,9 +19,7 @@ const registrarUsuarios = async (req, res) => {
   }
 
   try {
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-    const nuevoUsuario = new Usuario({ username, hashedPassword, role, date: new Date() });
+    const nuevoUsuario = new Usuario({ username, password, role, date: new Date() });
     await nuevoUsuario.save();
     console.log("Usuario registrado con éxito", nuevoUsuario);
     res.status(200).json({ mensaje: "Usuario registrado con éxito" });

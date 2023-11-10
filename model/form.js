@@ -44,14 +44,15 @@ const checkboxSchema = new mongoose.Schema({
         checkbox40: String,
         checkbox41: String,
     },
-    comentario: String,
-    date: Date,
+    comentario: {
+      type: String
+    }
   });
 
 const ProteccionModel = mongoose.model("Protecciones", checkboxSchema);
 const PeligrosModel = mongoose.model("Peligros", checkboxSchema);
-const RiegosModel = mongoose.model("Riesgos", checkboxSchema);
+const RiesgosModel = mongoose.model("Riesgos", checkboxSchema);
 const MedidasModel = mongoose.model("Medidas", checkboxSchema);
 
 
-module.exports = { ProteccionModel, PeligrosModel, RiegosModel, MedidasModel }
+module.exports = { ProteccionModel, PeligrosModel, RiesgosModel, MedidasModel }

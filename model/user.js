@@ -11,22 +11,22 @@ const usuarioSchema = new mongoose.Schema({
     required: true, 
   },
   role: {
-    type: String
+    type: String,
+    required: true
   },
   active: {
     type: Boolean,
     default: true,
   },
-  dni:{
-    type:Number
-  },
-  telefono:{
-    type:Number
-  },
    date: {
     type: Date
+   },
+   dni: {
+    type: Number
+   },
+   telefono: {
+    type: Number
    }
-
 });
 
 const Usuario = mongoose.model('Usuario', usuarioSchema);
