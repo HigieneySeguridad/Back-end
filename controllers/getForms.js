@@ -52,5 +52,29 @@ const obtenerDatosPeligros = async (req, res) => {
     }
   };
 
+  const DatosPorFecha = async (req, res) => {
+    try {
+        const fecha = req.params.fecha; // Debes pasar la fecha en el formato adecuado, por ejemplo, '2023-11-13'
+        
+        // Consultar en todos los modelos y combinar los resultados
+        const datosProteccion = await ProteccionModel.find({ fecha });
+        const datosPeligros = await PeligrosModel.find({ fecha });
+        const datosRiesgos = await RiesgosModel.find({ fecha });
+        const datosMedidas = await MedidasModel.find({ fecha });
 
-module.exports = {obtenerDatosProteccion, obtenerDatosPeligros, obtenerDatosRiesgos, obtenerDatosMedidas}
+        // Combina los resultados de todos los modelos en un solo objeto
+        const resultados = {
+            proteccion: datosProteccion,
+            peligros: datosPeligros,
+            riesgos: datosRiesgos,
+            medidas: datosMedidas,
+        };
+
+        res.status(200).json(resultados);
+    } catch (error) {
+        res.status(500).json({ message: 'Error interno del servidor' });
+    }
+};
+
+
+module.exports = {obtenerDatosProteccion, obtenerDatosPeligros, obtenerDatosRiesgos, obtenerDatosMedidas, DatosPorFecha}

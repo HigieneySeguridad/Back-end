@@ -46,7 +46,11 @@ const checkboxSchema = new mongoose.Schema({
     },
     comentario: {
       type: String
-    }
+    },
+    fecha: {
+      type: Date,
+      default: Date.now,
+    },
   });
 
 const ProteccionModel = mongoose.model("Protecciones", checkboxSchema);

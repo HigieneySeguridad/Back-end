@@ -7,6 +7,7 @@ const loginRoutes = require("./routes/loginUser")
 const imageRoutes = require("./routes/imageRoutes")
 const formRoutes = require('./routes/formRoutes')
 const limiter = require("./middlewares/rateLimiter")
+const initNotificaciones = require("./middlewares/notificaciones")
 require('dotenv').config();
 
 //INICIALIZAR SERVER
@@ -26,11 +27,9 @@ app.use("/upload", imageRoutes)
 app.use('/formularios', formRoutes)
 app.use('/uploads', express.static('uploads'));
 
-
-
 //DATABASE CONNECT
 mongooseConnection()
-
+initNotificaciones()
 
 app.listen(process.env.PORT, () => {
   console.log(`Servidor en ejecución en http://localhost:${process.env.PORT}`);

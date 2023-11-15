@@ -32,27 +32,30 @@ const iniciarSesion = async (req, res) => {
 };
 
 const editarPerfil = async (req, res) => {
-  const { userId } = req.params;
-  const { telefono, dni } = req.body;
+  const { password, role, active, telefono, dni } = req.body;
 
   try {
-    const usuario = await Usuario.findById(userId);
+    const usuario = await Usuario.findById(req.params.id);
 
     if (!usuario) {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
 
-    // No actualices el nombre de usuario
+    usuario.hashedPassword = password;
+    usuario.role = role;
+    usuario.active = active;
     usuario.telefono = telefono;
     usuario.dni = dni;
 
     await usuario.save();
 
     res.json({ message: 'Perfil actualizado correctamente' });
+    console.log("Usuario editado correctamente");
   } catch (error) {
     console.error('Error al editar el perfil del usuario:', error);
     res.status(500).json({ message: 'Error interno del servidor' });
   }
 };
+
 
 module.exports = {iniciarSesion,editarPerfil}

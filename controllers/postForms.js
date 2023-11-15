@@ -1,19 +1,18 @@
 const { ProteccionModel, PeligrosModel, RiesgosModel, MedidasModel } = require("../model/form");
 
-const formProteccion = async (req, res) =>{
-    try {
-        const datosForm = req.body;
-    
-        const checkboxData = new ProteccionModel(datosForm);
+const formProteccion = async (req, res) => {
+  try {
+    const datosForm = req.body;
+    const checkboxData = new ProteccionModel({ ...datosForm, fecha: new Date() });
 
-        await checkboxData.save();
-    
-        console.log('Datos almacenados: ', checkboxData);
-        res.status(200).send("Datos almacenados con éxito en la base de datos.");
-      } catch (error) {
-        res.json(error)
-        } 
-}
+    await checkboxData.save();
+
+    console.log('Datos almacenados: ', checkboxData);
+    res.status(200).send('Datos almacenados con éxito en la base de datos.');
+  } catch (error) {
+    res.json(error);
+  }
+};
 
 
 
@@ -21,7 +20,7 @@ const formPeligros = async (req, res) =>{
     try {
         const datosForm = req.body;
     
-        const checkboxData = new PeligrosModel(datosForm);
+        const checkboxData = new PeligrosModel({ ...datosForm, fecha: new Date() });
     
         await checkboxData.save();
     
@@ -37,7 +36,7 @@ const formRiesgos = async (req, res) => {
     try {
         const datosForm = req.body;
     
-        const checkboxData = new RiesgosModel(datosForm);
+        const checkboxData = new RiesgosModel({ ...datosForm, fecha: new Date() });
     
         await checkboxData.save();
     
@@ -52,7 +51,7 @@ const formMedidas = async (req, res) =>{
     try {
         const datosForm = req.body;
     
-        const checkboxData = new MedidasModel(datosForm);
+        const checkboxData = new MedidasModel({ ...datosForm, fecha: new Date() });
     
         await checkboxData.save();
     
