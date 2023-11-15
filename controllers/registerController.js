@@ -1,5 +1,5 @@
 const Usuario = require("../model/user")
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 const consultarUsuarios = async (req, res) => {
   try {
@@ -20,8 +20,8 @@ const registrarUsuarios = async (req, res) => {
   }
    
   try {
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const saltRounds = bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(password, saltRounds);
     const nuevoUsuario = new Usuario({ username, hashedPassword, role, date: new Date() });
     await nuevoUsuario.save();
     console.log("Usuario registrado con éxito", nuevoUsuario);
@@ -52,9 +52,39 @@ const eliminarUsuarios = async (req, res) => {
     }
 }
 
+const editarUsuarios = async (req, res) => {
+    const { password, role, active, telefono, dni } = req.body;
+  
+    try {
+      const usuario = await Usuario.findById(req.params.id);
+  
+      if (!usuario) {
+        return res.status(404).json({ message: 'Usuario no encontrado' });
+      }
+  
+      const saltRounds = bcrypt.genSaltSync(10);
+      const hashedPassword = bcrypt.hashSync(password, saltRounds);
+  
+      
+      usuario.hashedPassword = hashedPassword;
+      usuario.role = role;
+      usuario.active = active;
+      usuario.telefono = telefono;
+      usuario.dni = dni;
+  
+      await usuario.save();
+  
+      res.json({ message: 'Perfil actualizado correctamente' });
+      console.log("Usuario editado correctamente");
+    } catch (error) {
+      console.error('Error al editar el perfil del usuario:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
+    }
+}
 
 module.exports = {
   consultarUsuarios,
   registrarUsuarios,
-  eliminarUsuarios
+  eliminarUsuarios,
+  editarUsuarios
 };

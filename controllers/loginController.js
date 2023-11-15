@@ -1,6 +1,6 @@
 const Usuario = require("../model/user");
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 const iniciarSesion = async (req, res) => {
   const { username, password } = req.body;
@@ -13,7 +13,7 @@ const iniciarSesion = async (req, res) => {
     }
 
     //Comparar la contraseña proporcionada con la contraseña encriptada almacenada
-    const match = await bcrypt.compare(password, usuario.hashedPassword);
+    const match = bcrypt.compareSync(password, usuario.hashedPassword);
 
     if (!match) {
       return res.status(401).json({ message: 'Contraseña incorrecta' });
@@ -31,31 +31,5 @@ const iniciarSesion = async (req, res) => {
   }
 };
 
-const editarPerfil = async (req, res) => {
-  const { password, role, active, telefono, dni } = req.body;
 
-  try {
-    const usuario = await Usuario.findById(req.params.id);
-
-    if (!usuario) {
-      return res.status(404).json({ message: 'Usuario no encontrado' });
-    }
-
-    usuario.hashedPassword = password;
-    usuario.role = role;
-    usuario.active = active;
-    usuario.telefono = telefono;
-    usuario.dni = dni;
-
-    await usuario.save();
-
-    res.json({ message: 'Perfil actualizado correctamente' });
-    console.log("Usuario editado correctamente");
-  } catch (error) {
-    console.error('Error al editar el perfil del usuario:', error);
-    res.status(500).json({ message: 'Error interno del servidor' });
-  }
-};
-
-
-module.exports = {iniciarSesion,editarPerfil}
+module.exports = {iniciarSesion}
