@@ -4,6 +4,7 @@ const Router = express.Router();
 
 
 Router.post('/', iniciarSesion);
+Router.put('/:userId', editarPerfil);
 
 
 module.exports = Router;
