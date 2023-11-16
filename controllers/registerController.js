@@ -65,7 +65,9 @@ const editarUsuarios = async (req, res) => {
       const saltRounds = bcrypt.genSaltSync(10);
       const hashedPassword = bcrypt.hashSync(password, saltRounds);
   
-      
+      if(hashedPassword === "") {
+        
+      }
       usuario.hashedPassword = hashedPassword;
       usuario.role = role;
       usuario.active = active;

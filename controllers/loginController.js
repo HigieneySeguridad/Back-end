@@ -11,7 +11,9 @@ const iniciarSesion = async (req, res) => {
     if (!usuario) {
       return res.status(401).json({ message: 'Usuario no encontrado' });
     }
-
+    if(usuario.active === false){
+      return res.status(400).json({message: "Usuario inactivo"})
+    }
     //Comparar la contraseña proporcionada con la contraseña encriptada almacenada
     const match = bcrypt.compareSync(password, usuario.hashedPassword);
 
