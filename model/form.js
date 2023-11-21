@@ -1,7 +1,22 @@
 const mongoose = require('mongoose');
 
 const checkboxSchema = new mongoose.Schema({
-    checkboxes: {
+    proteccion: {
+        type: Object,
+        of: String,
+        required: true,
+    },
+    peligros: {
+        type: Object,
+        of: String,
+        required: true,
+    },
+    riesgos: {
+        type: Object,
+        of: String,
+        required: true,
+    },
+    medidas: {
         type: Object,
         of: String,
         required: true,
@@ -13,11 +28,14 @@ const checkboxSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    estado: {
+        type: String
+    },
+    username: {
+        type: String
+    }
 });
 
-const ProteccionModel = mongoose.model("Protecciones", checkboxSchema);
-const PeligrosModel = mongoose.model("Peligros", checkboxSchema);
-const RiesgosModel = mongoose.model("Riesgos", checkboxSchema);
-const MedidasModel = mongoose.model("Medidas", checkboxSchema);
+const formularioModel = mongoose.model("formularios", checkboxSchema);
 
-module.exports = { ProteccionModel, PeligrosModel, RiesgosModel, MedidasModel }
+module.exports = formularioModel;

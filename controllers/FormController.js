@@ -1,22 +1,32 @@
-const { ProteccionModel, PeligrosModel, RiesgosModel, MedidasModel } = require("../model/form");
+const formularioModel = require("../model/form");
 
-const guardarDatos = async (req, res) => {
+const obtenerFormularios = async (req, res) => {
   try {
-    const datosForm = req.body;
+    const datos = await formularioModel.find();
+    res.status(200).json(datos);
+  } catch (error) {
+    console.error('Error al obtener todos los datos:', error);
+    res.status(500).json({ message: 'Error interno del servidor' });
+  }
+};
 
-    // Crear un arreglo que contenga la fecha y los cuatro conjuntos de datos
-    const datosCompletos = [
-      { tipo: 'proteccion', checkboxData: new ProteccionModel(datosForm[0])},
-      { tipo: 'peligros', checkboxData: new PeligrosModel(datosForm[1]) },
-      { tipo: 'riesgos', checkboxData: new RiesgosModel(datosForm[2]) },
-      { tipo: 'medidas', checkboxData: new MedidasModel(datosForm[3]) },
-    ];
+const guardarFormulario = async (req, res) => {
+  try {
+    const { proteccion, peligros, riesgos, medidas, fecha, comentario, estado, username } = req.body;
 
+    const nuevoForm = new formularioModel({
+      proteccion,
+      peligros,
+      riesgos,
+      medidas,
+      fecha,  // asegúrate de que fecha esté en el cuerpo de la solicitud
+      comentario,
+      estado,
+      username
+    });
 
-    // Guardar los datos en la base de datos
-    await Promise.all(datosCompletos.map(async (item) => await item.checkboxData.save()));
-
-    console.log('Datos almacenados con éxito en la base de datos:', datosCompletos);
+    await nuevoForm.save();  // Debes guardar el nuevo formulario en la base de datos
+    console.log('Datos almacenados con éxito en la base de datos:', nuevoForm);
     res.status(200).send('Datos almacenados con éxito en la base de datos.');
   } catch (error) {
     console.error('Error al guardar los datos:', error);
@@ -24,28 +34,29 @@ const guardarDatos = async (req, res) => {
   }
 };
 
-const DatosPorFecha = async (req, res) => {
+const formulariosPorFecha = async (req, res) => {
   try {
-      const fecha = req.params.fecha; // Debes pasar la fecha en el formato adecuado, por ejemplo, '2023-11-13'
-      
-      // Consultar en todos los modelos y combinar los resultados
-      const datosProteccion = await ProteccionModel.find({ fecha });
-      const datosPeligros = await PeligrosModel.find({ fecha });
-      const datosRiesgos = await RiesgosModel.find({ fecha });
-      const datosMedidas = await MedidasModel.find({ fecha });
+    const fecha = req.params.fecha; 
+    const datos = await formularioModel.find({ fecha });
 
-      // Combina los resultados de todos los modelos en un solo objeto
-      const resultados = {
-          proteccion: datosProteccion,
-          peligros: datosPeligros,
-          riesgos: datosRiesgos,
-          medidas: datosMedidas,
-      };
-
-      res.status(200).json(resultados);
+    res.status(200).json(datos);
   } catch (error) {
-      res.status(500).json({ message: 'Error interno del servidor' });
+    res.status(500).json({ message: 'Error interno del servidor' });
   }
 };
 
-module.exports = {guardarDatos, DatosPorFecha}
+const editarEstado = async (req, res) => {
+  try {
+    const formId = req.params.id; 
+    const { estado } = req.body;
+    
+    await formularioModel.findByIdAndUpdate(formId, { estado });
+
+    res.status(200).json({ message: 'Estado actualizado exitosamente' });
+  } catch (error) {
+    console.error('Error al actualizar el estado de los datos:', error);
+    res.status(500).json({ message: 'Error interno del servidor' });
+  }
+};
+
+module.exports = { guardarFormulario, formulariosPorFecha, obtenerFormularios, editarEstado};

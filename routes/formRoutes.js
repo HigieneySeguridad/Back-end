@@ -1,10 +1,12 @@
 const express = require("express");
 const Router = express.Router();
-const {guardarDatos, DatosPorFecha} = require('../controllers/FormController');
+const { guardarFormulario, formulariosPorFecha, obtenerFormularios, editarEstado} = require('../controllers/FormController');
 
-Router.get("/:fecha", DatosPorFecha);
+Router.get('/', obtenerFormularios);
+Router.get("/:fecha", formulariosPorFecha);
+Router.post('/', guardarFormulario);
+Router.put("/:id", editarEstado);
 
-Router.post('/', guardarDatos);
 
 
 module.exports = Router;
