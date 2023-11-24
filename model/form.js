@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const checkboxSchema = new mongoose.Schema({
+    header: {
+        type: Object,
+        of: String,
+        required: true
+    },
     proteccion: {
         type: Object,
         of: String,
@@ -21,6 +26,11 @@ const checkboxSchema = new mongoose.Schema({
         of: String,
         required: true,
     },
+    textArea: {
+        type: Object,
+        of: String,
+        required: true,
+    },
     comentario: {
         type: String,
     },
@@ -33,6 +43,34 @@ const checkboxSchema = new mongoose.Schema({
     },
     username: {
         type: String
+    },
+    area: {
+        type: String,
+        required: true
+    },
+    permisoTrabajo: {
+        type: Number,
+        required: true
+    },
+    yacimiento: {
+        type: String,
+        required: true
+    },
+    empresa: {
+        type: String,
+        required: true
+    },
+    tarea: {
+        type: String,
+        required: true
+    },
+    pasos: {
+        type: String,
+        required: true
+    },
+    observaciones: {
+        type: String,
+        required: true
     }
 });
 

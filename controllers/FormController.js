@@ -12,9 +12,17 @@ const obtenerFormularios = async (req, res) => {
 
 const guardarFormulario = async (req, res) => {
   try {
-    const { proteccion, peligros, riesgos, medidas, fecha, comentario, estado, username } = req.body;
+    const { header, empresa, area, permisoTrabajo, observaciones, yacimiento, textArea, tarea, pasos, proteccion, peligros, riesgos, medidas, fecha, comentario, estado, username } = req.body;
 
     const nuevoForm = new formularioModel({
+      header,
+      empresa,
+      area,
+      permisoTrabajo,
+      yacimiento,
+      tarea,
+      pasos,
+      textArea,
       proteccion,
       peligros,
       riesgos,
@@ -22,7 +30,8 @@ const guardarFormulario = async (req, res) => {
       fecha,  // asegúrate de que fecha esté en el cuerpo de la solicitud
       comentario,
       estado,
-      username
+      username,
+      observaciones
     });
 
     await nuevoForm.save();  // Debes guardar el nuevo formulario en la base de datos
@@ -34,10 +43,9 @@ const guardarFormulario = async (req, res) => {
   }
 };
 
-const formulariosPorFecha = async (req, res) => {
+const formulariosPorID= async (req, res) => {
   try {
-    const fecha = req.params.fecha; 
-    const datos = await formularioModel.find({ fecha });
+    const datos = await formularioModel.findById(req.params.id);
 
     res.status(200).json(datos);
   } catch (error) {
@@ -59,4 +67,4 @@ const editarEstado = async (req, res) => {
   }
 };
 
-module.exports = { guardarFormulario, formulariosPorFecha, obtenerFormularios, editarEstado};
+module.exports = { guardarFormulario, formulariosPorID, obtenerFormularios, editarEstado};
