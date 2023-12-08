@@ -53,7 +53,7 @@ const eliminarUsuarios = async (req, res) => {
 }
 
 const editarUsuarios = async (req, res) => {
-    const { password, role, active, telefono, dni } = req.body;
+    const { username, password, telefono, dni } = req.body;
   
     try {
       const usuario = await Usuario.findById(req.params.id);
@@ -67,8 +67,7 @@ const editarUsuarios = async (req, res) => {
   
      
       usuario.hashedPassword = hashedPassword;
-      usuario.role = role;
-      usuario.active = active;
+      usuario.username = username;
       usuario.telefono = telefono;
       usuario.dni = dni;
   
