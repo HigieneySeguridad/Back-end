@@ -69,7 +69,8 @@ const checkboxSchema = new mongoose.Schema({
         required: true
     },
     observaciones: {
-        type: String
+        type: String,
+        required: true
     },
     equipo: {
         type: Array,

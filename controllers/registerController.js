@@ -22,7 +22,7 @@ const registrarUsuarios = async (req, res) => {
   try {
     const saltRounds = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(password, saltRounds);
-    const nuevoUsuario = new Usuario({ username, nombreCompleto, hashedPassword, role, date: new Date() });
+    const nuevoUsuario = new Usuario({ username, hashedPassword, nombreCompleto, role, date: new Date() });
     await nuevoUsuario.save();
     console.log("Usuario registrado con éxito", nuevoUsuario);
     res.status(200).json({ mensaje: "Usuario registrado con éxito" });

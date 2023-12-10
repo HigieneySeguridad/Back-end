@@ -3,7 +3,7 @@ const Notificacion = require("../model/notificaciones");
 
 const obtenerFormularios = async (req, res) => {
   try {
-    const datos = await formularioModel.find({disponible: true});
+    const datos = await formularioModel.find();
     res.status(200).json(datos);
   } catch (error) {
     console.error('Error al obtener todos los datos:', error);
@@ -28,7 +28,7 @@ const guardarFormulario = async (req, res) => {
       peligros,
       riesgos,
       medidas,
-      fecha,  // asegúrate de que fecha esté en el cuerpo de la solicitud
+      fecha,  
       comentario,
       estado,
       username,
