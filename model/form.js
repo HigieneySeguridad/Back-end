@@ -69,9 +69,21 @@ const checkboxSchema = new mongoose.Schema({
         required: true
     },
     observaciones: {
+        type: String
+    },
+    equipo: {
+        type: Array,
+        of: Object
+    },
+    disponible: {
+        type: Boolean,
+        default: false
+    },
+    motivo: {
         type: String,
-        required: true
+        default: ''
     }
+
 });
 
 const formularioModel = mongoose.model("formularios", checkboxSchema);

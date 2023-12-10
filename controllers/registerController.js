@@ -12,9 +12,9 @@ const consultarUsuarios = async (req, res) => {
 }
 
 const registrarUsuarios = async (req, res) => {
-  const { username, password, role } = req.body;
+  const { username, password, role, nombreCompleto } = req.body;
 
-  if (!username || !password || !role) {
+  if (!username || !password || !role || !nombreCompleto) {
     console.log("Error, revise los campos");
     return res.status(400).json({ mensaje: "Error, revise los campos" });
   }
@@ -22,7 +22,7 @@ const registrarUsuarios = async (req, res) => {
   try {
     const saltRounds = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(password, saltRounds);
-    const nuevoUsuario = new Usuario({ username, hashedPassword, role, date: new Date() });
+    const nuevoUsuario = new Usuario({ username, nombreCompleto, hashedPassword, role, date: new Date() });
     await nuevoUsuario.save();
     console.log("Usuario registrado con éxito", nuevoUsuario);
     res.status(200).json({ mensaje: "Usuario registrado con éxito" });

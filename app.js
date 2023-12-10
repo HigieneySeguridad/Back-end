@@ -17,13 +17,14 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(limiter)
+
 
 //ROUTES
 app.use("/registrar", userRoutes)
 app.use("/login", loginRoutes)
 app.use('/formularios', formRoutes)
 app.use('/uploads', express.static('uploads'));
+app.use('/notificaciones', require('./routes/notificaciones.routes'));
 
 //DATABASE CONNECT
 mongooseConnection()

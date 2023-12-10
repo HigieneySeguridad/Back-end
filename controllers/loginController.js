@@ -21,7 +21,7 @@ const iniciarSesion = async (req, res) => {
       return res.status(401).json({ message: 'Contraseña incorrecta' });
     } 
 
-    const payload = { username };
+    const payload = { username, id: usuario._id };
     const token = jwt.sign({ ...payload }, process.env.SECRET_KEY);
 
     console.log("Inicio de Sesión correcto!");
