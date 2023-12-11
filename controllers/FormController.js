@@ -83,6 +83,16 @@ const editarEstado = async (req, res) => {
         tipo: 'solicitud',
         estado
     }) });
+    
+    const user = await Usuario.findOne({username:formUpdated.username})
+    await Notificacion.create({
+      mensaje: `Hola ${formUpdated.username}! Tu permiso de trabajo #${formUpdated.permisoTrabajo} ha sido ${estado}`,
+      idForm: formId,
+      idUsuario: user._id,
+      permisoTrabajo: formUpdated.permisoTrabajo,
+      tipo: 'solicitud',
+      estado
+  })
 
     res.status(200).json({ message: 'Estado actualizado exitosamente' });
   } catch (error) {
